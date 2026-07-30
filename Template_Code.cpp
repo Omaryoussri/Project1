@@ -183,15 +183,22 @@ private:
     
 public:
     PrivateChat(string u1, string u2) {
-        // TODO: Implement constructor
+        user1 = u1;
+        user2 = u2;
+        participants = {u1, u2};
+        chatName = "Chat between " + u1 + " and " + u2; // SRS format
+
     }
     
     void displayChat() const override {
-        // TODO: Implement private chat display
+        cout << chatName << endl;
+        for (const Message& message : messages) {
+            message.display(); // Assuming display() method in Message class shows a fully formatted message
+        }
     }
     
     void showTypingIndicator(const string& username) const {
-        // TODO: Implement typing indicator
+        cout << username << " is typing..." << endl;
     }
 };
 
