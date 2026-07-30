@@ -23,7 +23,15 @@ public:
         password = "";
         phoneNumber = "";
         status = "";
-        lastSeen = "";
+
+        //current timestamp
+        time_t lastSeentime = time(nullptr); 
+        struct tm *localTime = localtime(&lastSeentime); 
+
+        char timeDisplayFormat[80];
+        strftime(timeDisplayFormat, 80, "%Y/%m/%d %I:%M:%S %p", localTime); 
+
+        lastSeen = timeDisplayFormat;
 
     }
     
@@ -36,22 +44,22 @@ public:
     
     string getUsername() const {
         // TODO: Implement getter
-        return "username";
+        return username;
     }
     
     string getPhoneNumber() const {
         // TODO: Implement getter
-        return "phoneNumber";
+        return phoneNumber;
     }
     
     string getStatus() const {
         // TODO: Implement getter
-        return "status";
+        return status;
     }
     
     string getLastSeen() const {
         // TODO: Implement getter
-        return "lastSeen";
+        return lastSeen;
     }
     
     void setStatus(string newStatus) {
@@ -78,7 +86,7 @@ public:
     
     bool checkPassword(string pwd) const {
         // TODO: Implement password check
-        if(pwd.length() >= 6){ 
+        if(pwd == password){ 
             return true;
         }
         return false;
