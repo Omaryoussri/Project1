@@ -3,10 +3,11 @@
 #include <string>
 #include <ctime>
 using namespace std;
-//Template code
+
 // ========================
 //       USER CLASS
 // ========================
+
 class User {
 private:
     string username;
@@ -18,51 +19,87 @@ private:
 public:
     User() {
         // TODO: Implement default constructor
+        username = "";
+        password = "";
+        phoneNumber = "";
+        status = "";
+
+        //current timestamp
+        time_t lastSeentime = time(nullptr); 
+        struct tm *localTime = localtime(&lastSeentime); 
+
+        char timeDisplayFormat[80];
+        strftime(timeDisplayFormat, 80, "%Y/%m/%d %I:%M:%S %p", localTime); 
+
+        lastSeen = timeDisplayFormat;
+
     }
     
     User(string uname, string pwd, string phone) {
         // TODO: Implement parameterized constructor
+        username = uname;
+        password = pwd;
+        phoneNumber = phone;
     }
     
     string getUsername() const {
         // TODO: Implement getter
-        return "";
+        return username;
     }
     
     string getPhoneNumber() const {
         // TODO: Implement getter
-        return "";
+        return phoneNumber;
     }
     
     string getStatus() const {
         // TODO: Implement getter
-        return "";
+        return status;
     }
     
     string getLastSeen() const {
         // TODO: Implement getter
-        return "";
+        return lastSeen;
     }
     
     void setStatus(string newStatus) {
         // TODO: Implement setter
+        status = newStatus;
     }
     
     void setPhoneNumber(string phone) {
         // TODO: Implement setter
+        phoneNumber = phone;
     }
     
     void updateLastSeen() {
         // TODO: Implement last seen update
+        time_t lastSeentime = time(nullptr);
+        struct tm *localTime = localtime(&lastSeentime);
+
+        char timeDisplayFormat[80];
+        strftime(timeDisplayFormat, 80, "%Y/%m/%d %I:%M:%S %p", localTime);
+
+        lastSeen = timeDisplayFormat;
     }
+
     
     bool checkPassword(string pwd) const {
         // TODO: Implement password check
+        if(pwd == password){ 
+            return true;
+        }
         return false;
     }
     
     void changePassword(string newPwd) {
         // TODO: Implement password change
+        if(newPwd.length() < 6){
+            cout << "Password too short\n";
+        }
+        else{
+            password = newPwd;
+        }
     }
 };
 
