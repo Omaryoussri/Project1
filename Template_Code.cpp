@@ -121,13 +121,17 @@ public:
         content= "";
         timestamp="";
         status="";
-
+replyTo=nullptr;
+updateTimestamp();
     }
 
     Message(string sndr, string cntnt) {
         // TODO: Implement parameterized constructor
         sender=sndr;
         content=cntnt;
+        status="sent";
+        replyTo=nullptr;
+        updateTimestamp();
     }
 
     string getContent() const {
@@ -147,12 +151,12 @@ public:
 
     string getStatus() const {
         // TODO: Implement getter
-        return getStatus();
+        return Status();
     }
 
     Message* getReplyTo() const {
         // TODO: Implement getter
-        return nullptr;
+        return replyTo;
     }
 
     void setStatus(string newStatus) {
@@ -162,19 +166,48 @@ public:
 
     void setReplyTo(Message* msg) {
         // TODO: Implement setter
-
+     replyTo=msg;
     }
 
     void updateTimestamp() {
         // TODO: Implement timestamp update
+        time_t now = time(0);
+        timestamp = ctime(&now);
+
     }
 
     void display() const {
         // TODO: Implement message display
+
+        cout << "(" << timestamp << ")" << sender << ":" << endl;
+        if (replyTo != nullptr)
+        {
+            cout << "Replying to: " << replyTo->content << endl;
+
+        }
+        cout << "Message: " << content << endl;
+        cout << "Status: " << status << endl;
+
+
+
     }
 
     void addEmoji(string emojiCode) {
         // TODO: Implement emoji support
+        string symbol = "";
+        if (emojiCode ==":)") symbol = "😊";
+        else if (emojiCode == ":(") symbol = "🙁";
+    else if (emojiCode == ":D") symbol = "😃";
+    else if (emojiCode == "<3") symbol = "❤️";
+    else if (emojiCode == ":thumbsup:") symbol = "👍";
+
+    int pos = content.find(emojiCode)
+    if (pos != -1)
+    {
+        content.replace(pos, emojiCode.length(), symbol);
+    }
+
+
     }
 };
 
