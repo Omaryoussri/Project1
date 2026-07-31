@@ -151,7 +151,7 @@ updateTimestamp();
 
     string getStatus() const {
         // TODO: Implement getter
-        return Status();
+        return status;
     }
 
     Message* getReplyTo() const {
@@ -171,25 +171,25 @@ updateTimestamp();
 
     void updateTimestamp() {
         // TODO: Implement timestamp update
-        time_t now = time(0);
-        timestamp = ctime(&now);
-
+        time_t currentTime = time(nullptr);
+        struct tm *localTime = localtime(&currentTime);
+        char timeDisplayFormat[80];
+        strftime(timeDisplayFormat, 80, "%Y/%m/%d %I:%M:%S %p", localTime);
+        timestamp = timeDisplayFormat;
+    
     }
 
     void display() const {
         // TODO: Implement message display
-
-        cout << "(" << timestamp << ")" << sender << ":" << endl;
+        
+        cout << "(" << timestamp << ") " << sender << ":" << endl;
         if (replyTo != nullptr)
         {
-            cout << "Replying to: " << replyTo->content << endl;
-
+            cout << "Replying to: " << replyTo->getContent() << endl;
         }
+        
         cout << "Message: " << content << endl;
         cout << "Status: " << status << endl;
-
-
-
     }
 
     void addEmoji(string emojiCode) {
