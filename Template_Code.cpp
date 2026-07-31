@@ -201,7 +201,7 @@ updateTimestamp();
     else if (emojiCode == "<3") symbol = "❤️";
     else if (emojiCode == ":thumbsup:") symbol = "👍";
 
-    int pos = content.find(emojiCode)
+    int pos = content.find(emojiCode);
     if (pos != -1)
     {
         content.replace(pos, emojiCode.length(), symbol);
