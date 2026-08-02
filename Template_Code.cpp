@@ -16,7 +16,7 @@ private:
     string phoneNumber;
     string status;
     string lastSeen;
-    
+
 public:
     User() {
         // TODO: Implement default constructor
@@ -26,57 +26,57 @@ public:
         status = "";
 
         //current timestamp
-        time_t lastSeentime = time(nullptr); 
-        struct tm *localTime = localtime(&lastSeentime); 
+        time_t lastSeentime = time(nullptr);
+        struct tm* localTime = localtime(&lastSeentime);
 
         char timeDisplayFormat[80];
-        strftime(timeDisplayFormat, 80, "%Y/%m/%d %I:%M:%S %p", localTime); 
+        strftime(timeDisplayFormat, 80, "%Y/%m/%d %I:%M:%S %p", localTime);
 
         lastSeen = timeDisplayFormat;
 
     }
-    
+
     User(string uname, string pwd, string phone) {
         // TODO: Implement parameterized constructor
         username = uname;
         password = pwd;
         phoneNumber = phone;
     }
-    
+
     string getUsername() const {
         // TODO: Implement getter
         return username;
     }
-    
+
     string getPhoneNumber() const {
         // TODO: Implement getter
         return phoneNumber;
     }
-    
+
     string getStatus() const {
         // TODO: Implement getter
         return status;
     }
-    
+
     string getLastSeen() const {
         // TODO: Implement getter
         return lastSeen;
     }
-    
+
     void setStatus(string newStatus) {
         // TODO: Implement setter
         status = newStatus;
     }
-    
+
     void setPhoneNumber(string phone) {
         // TODO: Implement setter
         phoneNumber = phone;
     }
-    
+
     void updateLastSeen() {
         // TODO: Implement last seen update
         time_t lastSeentime = time(nullptr);
-        struct tm *localTime = localtime(&lastSeentime);
+        struct tm* localTime = localtime(&lastSeentime);
 
         char timeDisplayFormat[80];
         strftime(timeDisplayFormat, 80, "%Y/%m/%d %I:%M:%S %p", localTime);
@@ -84,21 +84,21 @@ public:
         lastSeen = timeDisplayFormat;
     }
 
-    
+
     bool checkPassword(string pwd) const {
         // TODO: Implement password check
-        if(pwd == password){ 
+        if (pwd == password) {
             return true;
         }
         return false;
     }
-    
+
     void changePassword(string newPwd) {
         // TODO: Implement password change
-        if(newPwd.length() < 6){
+        if (newPwd.length() < 6) {
             cout << "Password too short\n";
         }
-        else{
+        else {
             password = newPwd;
         }
     }
@@ -114,57 +114,57 @@ private:
     string timestamp;
     string status;
     Message* replyTo;
-    
+
 public:
     Message() {
         // TODO: Implement default constructor
     }
-    
+
     Message(string sndr, string cntnt) {
         // TODO: Implement parameterized constructor
     }
-    
+
     string getContent() const {
         // TODO: Implement getter
         return "";
     }
-    
+
     string getSender() const {
         // TODO: Implement getter
         return "";
     }
-    
+
     string getTimestamp() const {
         // TODO: Implement getter
         return "";
     }
-    
+
     string getStatus() const {
         // TODO: Implement getter
         return "";
     }
-    
+
     Message* getReplyTo() const {
         // TODO: Implement getter
         return nullptr;
     }
-    
+
     void setStatus(string newStatus) {
         // TODO: Implement setter
     }
-    
+
     void setReplyTo(Message* msg) {
         // TODO: Implement setter
     }
-    
+
     void updateTimestamp() {
         // TODO: Implement timestamp update
     }
-    
+
     void display() const {
         // TODO: Implement message display
     }
-    
+
     void addEmoji(string emojiCode) {
         // TODO: Implement emoji support
     }
@@ -173,57 +173,60 @@ public:
 // ========================
 //       CHAT CLASS (BASE)
 // ========================
-class Chat 
+class Chat
 {
 protected:
     vector<string> participants;
     vector<Message> messages;
     string chatName;
-    
+
 public:
-	// Default constructor
-    Chat() 
+    // Default constructor
+    Chat()
     {
         participants.clear();
-		messages.clear();
+        messages.clear();
         chatName = "";
     }
-    
-	// Parameterized constructor
-    Chat(vector<string> users, string name) 
+
+    // Parameterized constructor
+    Chat(vector<string> users, string name)
     {
         participants = users;
-		chatName = name;
+        chatName = name;
     }
-    
-	// Add a message to the chat
-    void addMessage(const Message& msg) 
+
+	// Default destructor
+    virtual ~Chat() = default;
+
+    // Add a message to the chat
+    void addMessage(const Message& msg)
     {
         messages.push_back(msg);
     }
-    
-	// Delete a message by index and username
-    bool deleteMessage(int index, const string& username) 
+
+    // Delete a message by index and username
+    bool deleteMessage(int index, const string& username)
     {
-        if (index < 0 || index >= messages.size()) 
+        if (index < 0 || index >= messages.size())
         {
             return false;
         }
 
-        if (messages[index].getSender() != username) 
+        if (messages[index].getSender() != username)
         {
             return false;
-		}
+        }
 
         messages.erase(messages.begin() + index);
 
         return true;
     }
-    
-	// Display the chat details and messages
-    virtual void displayChat() const 
+
+    // Display the chat details and messages
+    virtual void displayChat() const
     {
-		cout << "Chat Name: " << chatName << endl;
+        cout << "Chat Name: " << chatName << endl;
 
         if (message.empty())
         {
@@ -235,36 +238,36 @@ public:
             msg.display();
         }
     }
-    
-	// Search for messages containing a specific keyword
-    vector<Message> searchMessages(string keyword) const 
+
+    // Search for messages containing a specific keyword
+    vector<Message> searchMessages(string keyword) const
     {
         vector<Message> results;
 
-        for (const Message& msg : messages) 
+        for (const Message& msg : messages)
         {
             if (msg.getContent().find(keyword) != string::npos)
             {
                 results.push_back(msg);
             }
-		}
+        }
 
         return results;
     }
-    
-	// Export chat messages to a file
-    void exportToFile(const string& filename) const 
+
+    // Export chat messages to a file
+    void exportToFile(const string& filename) const
     {
         ofstream file(filename);
-        if (!file.is_open()) 
+        if (!file.is_open())
         {
             cout << "Could not open file.\n";
             return;
         }
-        
+
         file << "Chat: " << chatName << '\n';
 
-        for (const Message& msg : messages) 
+        for (const Message& msg : messages)
         {
             file << msg.getSender()
                 << " [" << msg.getTimestamp() << "]: "
@@ -281,16 +284,16 @@ class PrivateChat : public Chat {
 private:
     string user1;
     string user2;
-    
+
 public:
     PrivateChat(string u1, string u2) {
         // TODO: Implement constructor
     }
-    
+
     void displayChat() const override {
         // TODO: Implement private chat display
     }
-    
+
     void showTypingIndicator(const string& username) const {
         // TODO: Implement typing indicator
     }
@@ -303,39 +306,39 @@ class GroupChat : public Chat {
 private:
     vector<string> admins;
     string description;
-    
+
 public:
     GroupChat(vector<string> users, string name, string creator) {
         // TODO: Implement constructor
     }
-    
+
     void addAdmin(string newAdmin) {
         // TODO: Implement add admin
     }
-    
+
     bool removeParticipant(const string& admin, const string& userToRemove) {
         // TODO: Implement remove participant
         return false;
     }
-    
+
     bool isAdmin(string username) const {
         // TODO: Implement admin check
         return false;
     }
-    
+
     bool isParticipant(string username) const {
         // TODO: Implement participant check
         return false;
     }
-    
+
     void setDescription(string desc) {
         // TODO: Implement set description
     }
-    
+
     void displayChat() const override {
         // TODO: Implement group chat display
     }
-    
+
     void sendJoinRequest(const string& username) {
         // TODO: Implement join request
     }
@@ -349,56 +352,56 @@ private:
     vector<User> users;
     vector<Chat*> chats;
     int currentUserIndex;
-    
+
     int findUserIndex(string username) const {
         // TODO: Implement user search
         return -1;
     }
-    
+
     bool isLoggedIn() const {
         // TODO: Implement login check
         return false;
     }
-    
+
     string getCurrentUsername() const {
         // TODO: Implement get current user
         return "";
     }
-    
+
 public:
     WhatsApp() : currentUserIndex(-1) {}
-    
+
     void signUp() {
         // TODO: Implement user registration
     }
-    
+
     void login() {
         // TODO: Implement user login
     }
-    
+
     void startPrivateChat() {
         // TODO: Implement private chat creation
     }
-    
+
     void createGroup() {
         // TODO: Implement group creation
     }
-    
+
     void viewChats() const {
         // TODO: Implement chat viewing
     }
-    
+
     void logout() {
         // TODO: Implement logout
     }
-    
+
     void run() {
         while (true) {
             if (!isLoggedIn()) {
                 cout << "\n1. Login\n2. Sign Up\n3. Exit\nChoice: ";
                 int choice;
                 cin >> choice;
-                
+
                 if (choice == 1) login();
                 else if (choice == 2) signUp();
                 else if (choice == 3) break;
@@ -407,7 +410,7 @@ public:
                 cout << "\n1. Start Private Chat\n2. Create Group\n3. View Chats\n4. Logout\nChoice: ";
                 int choice;
                 cin >> choice;
-                
+
                 if (choice == 1) startPrivateChat();
                 else if (choice == 2) createGroup();
                 else if (choice == 3) viewChats();
