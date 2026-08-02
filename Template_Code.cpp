@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <ctime>
+#include <fstream>
 using namespace std;
 
 // ========================
@@ -172,41 +173,104 @@ public:
 // ========================
 //       CHAT CLASS (BASE)
 // ========================
-class Chat {
+class Chat 
+{
 protected:
     vector<string> participants;
     vector<Message> messages;
     string chatName;
     
 public:
-    Chat() {
-        // TODO: Implement default constructor
+	// Default constructor
+    Chat() 
+    {
+        participants.clear();
+		messages.clear();
+        chatName = "";
     }
     
-    Chat(vector<string> users, string name) {
-        // TODO: Implement parameterized constructor
+	// Parameterized constructor
+    Chat(vector<string> users, string name) 
+    {
+        participants = users;
+		chatName = name;
     }
     
-    void addMessage(const Message& msg) {
-        // TODO: Implement message addition
+	// Add a message to the chat
+    void addMessage(const Message& msg) 
+    {
+        messages.push_back(msg);
     }
     
-    bool deleteMessage(int index, const string& username) {
-        // TODO: Implement message deletion
-        return false;
+	// Delete a message by index and username
+    bool deleteMessage(int index, const string& username) 
+    {
+        if (index < 0 || index >= messages.size()) 
+        {
+            return false;
+        }
+
+        if (messages[index].getSender() != username) 
+        {
+            return false;
+		}
+
+        messages.erase(messages.begin() + index);
+
+        return true;
     }
     
-    virtual void displayChat() const {
-        // TODO: Implement chat display
+	// Display the chat details and messages
+    virtual void displayChat() const 
+    {
+		cout << "Chat Name: " << chatName << endl;
+
+        if (message.empty())
+        {
+            cout << "No messages in this chat." << endl;
+        }
+
+        for (const Message& msg : messages)
+        {
+            msg.display();
+        }
     }
     
-    vector<Message> searchMessages(string keyword) const {
-        // TODO: Implement message search
-        return {};
+	// Search for messages containing a specific keyword
+    vector<Message> searchMessages(string keyword) const 
+    {
+        vector<Message> results;
+
+        for (const Message& msg : messages) 
+        {
+            if (msg.getContent().find(keyword) != string::npos)
+            {
+                results.push_back(msg);
+            }
+		}
+
+        return results;
     }
     
-    void exportToFile(const string& filename) const {
-        // TODO: Implement export to file
+	// Export chat messages to a file
+    void exportToFile(const string& filename) const 
+    {
+        ofstream file(filename);
+        if (!file.is_open()) 
+        {
+            cout << "Could not open file.\n";
+            return;
+        }
+        
+        file << "Chat: " << chatName << '\n';
+
+        for (const Message& msg : messages) 
+        {
+            file << msg.getSender()
+                << " [" << msg.getTimestamp() << "]: "
+                << msg.getContent() << '\n';
+        }
+
     }
 };
 
