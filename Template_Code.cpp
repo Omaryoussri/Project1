@@ -172,6 +172,11 @@ updateTimestamp();
 
     void updateTimestamp() {
         // TODO: Implement timestamp update
+        time_t currentTime = time(nullptr);
+        struct tm *localTime = localtime(&currentTime);
+        char timeDisplayFormat[80];
+        strftime(timeDisplayFormat, 80, "%Y/%m/%d %I:%M:%S %p", localTime);
+        timestamp = timeDisplayFormat;
     }
 
     void display() const {
