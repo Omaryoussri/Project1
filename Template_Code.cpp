@@ -337,7 +337,7 @@ private:
 
     int findUserIndex(string username) const {
         for(int i=0;i<(int)users.size();i++){
-            if(users[i].getUsername==username){
+            if(users[i].getUsername()==username){
                 return i;
             }
         }
